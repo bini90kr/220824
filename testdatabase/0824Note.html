@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script src="https://code.jquery.com/jquery-latest.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-database.js"></script>
+    <title>Welcome to Firebase Hosting</title>
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyAEGFYd75IR2GnhTXR5gs1bb5Mk4eHFUL0",
+        authDomain: "test0824data.firebaseapp.com",
+        databaseURL: "https://test0824data-default-rtdb.firebaseio.com",
+        projectId: "test0824data",
+        storageBucket: "test0824data.appspot.com",
+        messagingSenderId: "124756214666",
+        appId: "1:124756214666:web:7c2403b68d7707b722fe73"
+      };
+
+      firebase.initializeApp(firebaseConfig);
+      let database = firebase.database();
+
+    //  function sendMsg(){ 와 같음
+      $(document).ready(()=>{
+        $("#timeRecord").on("click",()=>{
+          let date = new Date();
+          let message = $("#message").val();
+          database.ref("msgs/"+date.getTime()).set(message);
+        });
+    // function loadMsgs(){ 와 같음
+        database.ref("msgs").on("value", (snapshot)=>{
+          $("#chatList").html("");
+          snapshot.forEach((child)=>{
+            $("#chatList").append("<div>"+child.val()+"</div>");
+          })
+        });
+      })
+
+      database.ref("bini").on("value",(snapshot)=>{
+        alert(snapshot.val());
+      })
+
+    </script>
+    <!-- database.ref ~~ : msgs안에 Json 구조 자체가 값으로 들어가는 것-->
+    <!-- date~~ 키 값, set~~ : 벨류 값이 들어 가는 것-->
+
+  </head>
+  <body>
+    <input type="text" id="message">
+    <button id = "timeRecord"> 시간 기록</button>
+
+    <div id="chatList">
+
+  </body>
+</html>
